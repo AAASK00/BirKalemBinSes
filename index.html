@@ -100,6 +100,7 @@ input{
 
 <body>
 
+<!-- MÜZİK -->
 <audio id="music" loop>
   <source src="https://files.freemusicarchive.org/storage-freemusicarchive-org/music/no_curator/Lee_Rosevere/Music_For_Podcasts_2/Lee_Rosevere_-_01_-_Thoughtful.mp3" type="audio/mpeg">
 </audio>
@@ -116,7 +117,7 @@ input{
   <div class="menu">
     <button onclick="openPresentation()">📄 Sunum</button>
     <button onclick="goName()">🎯 Yarışma</button>
-    <button onclick="alert('Skor tablosu eklenecek')">🏆 Skor Tablosu</button>
+    <button onclick="showScores()">🏆 Skor Tablosu</button>
     <button onclick="adminLogin()">🔐 Yönetici</button>
   </div>
 </div>
@@ -146,11 +147,20 @@ input{
   </div>
 </div>
 
+<!-- SKOR -->
+<div class="container page" id="scorePage">
+  <h1>Skor Tablosu</h1>
+  <div id="scoreList"></div>
+  <div class="menu">
+    <button onclick="goHome()">Ana Sayfa</button>
+  </div>
+</div>
+
 <!-- ADMİN -->
 <div class="container page" id="adminPage">
   <h1>Yönetici Paneli</h1>
   <div class="menu">
-    <button onclick="alert('Skor sıfırlanacak')">Skorları Sıfırla</button>
+    <button onclick="resetScores()">Skorları Sıfırla</button>
     <button onclick="goHome()">Ana Sayfa</button>
   </div>
 </div>
@@ -182,17 +192,20 @@ function goName(){
   document.getElementById("namePage").style.display="block";
 }
 
+/* PDF */
 function openPresentation(){
   startMusic();
-  alert("PDF sunum bağlanacak");
+  window.open("sunum.pdf","_blank");
 }
 
+/* QUIZ */
 const questions=[
-  {q:"Sabahattin Ali hangi türde eserler vermiştir?",a:["Roman","Şiir","Hikâye","Hepsi"],c:3},
+  {q:"Sabahattin Ali hangi türlerde eserler vermiştir?",a:["Roman","Şiir","Hikâye","Hepsi"],c:3},
   {q:"Kürk Mantolu Madonna bir?",a:["Şiir","Roman","Tiyatro","Makale"],c:1}
 ];
 
 let index=0,score=0,player="";
+let scores=JSON.parse(localStorage.getItem("scores")||"[]");
 
 function startQuiz(){
   player=document.getElementById("playerName").value;
@@ -223,18 +236,39 @@ function showQuestion(){
 }
 
 function finish(){
+  scores.push({name:player,score});
+  localStorage.setItem("scores",JSON.stringify(scores));
   document.getElementById("winner").innerText=player;
   document.getElementById("finalScore").innerText=score;
   hideAll();
   document.getElementById("finishPage").style.display="block";
 }
 
+/* SKOR */
+function showScores(){
+  let html="<ul>";
+  scores.forEach(s=>html+=`<li>${s.name} - ${s.score}</li>`);
+  html+="</ul>";
+  document.getElementById("scoreList").innerHTML=html;
+  hideAll();
+  document.getElementById("scorePage").style.display="block";
+}
+
+/* ADMİN */
 function adminLogin(){
   const p=prompt("Yönetici şifresi:");
   if(p==="0655"){
     hideAll();
     document.getElementById("adminPage").style.display="block";
   }else alert("Hatalı şifre");
+}
+
+function resetScores(){
+  if(confirm("Skorlar sıfırlansın mı?")){
+    scores=[];
+    localStorage.removeItem("scores");
+    alert("Skorlar sıfırlandı");
+  }
 }
 
 goHome();
