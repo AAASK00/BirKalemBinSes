@@ -18,13 +18,14 @@ body{
   color:#fff;
   background:
     linear-gradient(to right,rgba(0,0,0,.78),rgba(0,0,0,.35),rgba(0,0,0,.1)),
-    url("https://images.unsplash.com/photo-1549880338-65ddcdfd017b?q=80&w=1920");
+    url("https://www.ithakiyayingrubu.com/dosyalar/2022/02/Sabahattin-Ali.jpg");
   background-size:cover;
-  background-position:center;
+  background-position:right center;
   display:flex;
   align-items:center;
 }
 
+/* SOL ALAN */
 .container{
   max-width:520px;
   padding:60px;
@@ -60,9 +61,7 @@ h1{
   transform:translateX(6px);
 }
 
-.page{
-  display:none;
-}
+.page{display:none}
 
 input{
   padding:14px;
@@ -80,11 +79,9 @@ input{
   margin:10px 0;
   cursor:pointer;
 }
-.choice:hover{
-  background:rgba(255,255,255,.35);
-}
+.choice:hover{background:rgba(255,255,255,.35)}
 
-#musicControl{
+#musicBox{
   position:fixed;
   bottom:20px;
   right:20px;
@@ -94,16 +91,9 @@ input{
 }
 
 @media(max-width:768px){
-  body{
-    justify-content:center;
-    text-align:center;
-  }
-  .container{
-    padding:30px;
-  }
-  h1{
-    font-size:38px;
-  }
+  body{justify-content:center;text-align:center;}
+  .container{padding:30px;}
+  h1{font-size:38px;}
 }
 </style>
 </head>
@@ -114,9 +104,10 @@ input{
   <source src="https://files.freemusicarchive.org/storage-freemusicarchive-org/music/no_curator/Lee_Rosevere/Music_For_Podcasts_2/Lee_Rosevere_-_01_-_Thoughtful.mp3" type="audio/mpeg">
 </audio>
 
-<div id="musicControl">
+<div id="musicBox">
   <button onclick="toggleMusic()">🎵</button><br>
-  <input type="range" min="0" max="1" step="0.01" value="0.5" onchange="music.volume=this.value">
+  <input type="range" min="0" max="1" step="0.01" value="0.5"
+    onchange="music.volume=this.value">
 </div>
 
 <!-- ANA SAYFA -->
@@ -125,13 +116,14 @@ input{
   <div class="menu">
     <button onclick="openPresentation()">📄 Sunum</button>
     <button onclick="goName()">🎯 Yarışma</button>
-    <button onclick="alert('Skor sistemi sonraki adım')">🏆 Skor Tablosu</button>
+    <button onclick="alert('Skor tablosu eklenecek')">🏆 Skor Tablosu</button>
+    <button onclick="adminLogin()">🔐 Yönetici</button>
   </div>
 </div>
 
 <!-- İSİM -->
 <div class="container page" id="namePage">
-  <h1>İsmini Gir</h1>
+  <h1>İsminizi Girin</h1>
   <input id="playerName" placeholder="Ad Soyad">
   <div class="menu">
     <button onclick="startQuiz()">Başla</button>
@@ -145,7 +137,7 @@ input{
   <div id="choices"></div>
 </div>
 
-<!-- SON -->
+<!-- BİTİŞ -->
 <div class="container page" id="finishPage">
   <h1>Tebrikler <span id="winner"></span>!</h1>
   <h2>Puanın: <span id="finalScore"></span></h2>
@@ -154,13 +146,21 @@ input{
   </div>
 </div>
 
+<!-- ADMİN -->
+<div class="container page" id="adminPage">
+  <h1>Yönetici Paneli</h1>
+  <div class="menu">
+    <button onclick="alert('Skor sıfırlanacak')">Skorları Sıfırla</button>
+    <button onclick="goHome()">Ana Sayfa</button>
+  </div>
+</div>
+
 <script>
 const music=document.getElementById("music");
 music.volume=0.5;
 
 function toggleMusic(){
-  if(music.paused) music.play();
-  else music.pause();
+  music.paused ? music.play() : music.pause();
 }
 
 function startMusic(){
@@ -184,7 +184,7 @@ function goName(){
 
 function openPresentation(){
   startMusic();
-  alert("Sunum PDF bağlanacak");
+  alert("PDF sunum bağlanacak");
 }
 
 const questions=[
@@ -227,6 +227,14 @@ function finish(){
   document.getElementById("finalScore").innerText=score;
   hideAll();
   document.getElementById("finishPage").style.display="block";
+}
+
+function adminLogin(){
+  const p=prompt("Yönetici şifresi:");
+  if(p==="0655"){
+    hideAll();
+    document.getElementById("adminPage").style.display="block";
+  }else alert("Hatalı şifre");
 }
 
 goHome();
