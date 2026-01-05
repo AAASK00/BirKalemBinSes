@@ -1,216 +1,233 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Okul Projesi – Bilgi Yarışması</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Okul Projesi</title>
+
+  <!-- GOOGLE FONT -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
   <style>
-    * { box-sizing: border-box; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      margin: 0;
-      font-family: 'Segoe UI', Arial, sans-serif;
+      font-family: 'Poppins', sans-serif;
       background: #0f172a;
-      color: #fff;
-      text-align: center;
+      color: white;
+      overflow-x: hidden;
     }
-    button {
-      cursor: pointer;
-      border: none;
-      border-radius: 12px;
-      padding: 14px 28px;
-      font-size: 18px;
-      transition: 0.3s;
-    }
-    button:hover { transform: scale(1.05); }
 
     /* HERO */
     .hero {
-      height: 100vh;
-      background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
+      min-height: 100vh;
+      background: linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.85)),
       url('https://www.ithakiyayingrubu.com/dosyalar/2022/02/Sabahattin-Ali.jpg') center/cover no-repeat;
       display: flex;
-      flex-direction: column;
-      justify-content: center;
       align-items: center;
+      justify-content: center;
+      text-align: center;
       padding: 20px;
     }
-    .hero h1 { font-size: 56px; margin-bottom: 10px; }
-    .hero p { font-size: 22px; margin-bottom: 30px; }
 
-    .input {
-      padding: 14px;
-      border-radius: 10px;
-      border: none;
+    .hero-box {
+      background: rgba(15,23,42,0.75);
+      padding: 40px 30px;
+      border-radius: 20px;
+      box-shadow: 0 25px 60px rgba(0,0,0,0.5);
+      max-width: 420px;
+      width: 100%;
+    }
+
+    .hero-box h1 {
+      font-size: 42px;
+      margin-bottom: 30px;
+    }
+
+    .btn {
+      display: block;
+      width: 100%;
+      padding: 15px;
+      margin: 15px 0;
       font-size: 18px;
-      width: 260px;
+      font-weight: 600;
+      border-radius: 14px;
+      border: none;
+      cursor: pointer;
+      transition: all .3s ease;
+    }
+
+    .btn-primary { background: #22c55e; color: #052e16; }
+    .btn-primary:hover { transform: scale(1.05); }
+
+    .btn-secondary { background: #38bdf8; color: #082f49; }
+    .btn-secondary:hover { transform: scale(1.05); }
+
+    .btn-warning { background: #facc15; color: #422006; }
+    .btn-warning:hover { transform: scale(1.05); }
+
+    .hidden { display: none; }
+
+    /* CONTENT */
+    .page {
+      min-height: 100vh;
+      padding: 40px 20px;
+      background: radial-gradient(circle at top, #1e293b, #020617);
+      text-align: center;
+    }
+
+    input {
+      width: 90%;
+      max-width: 350px;
+      padding: 14px;
+      font-size: 16px;
+      border-radius: 12px;
+      border: none;
       margin-bottom: 20px;
     }
 
-    /* MENU */
-    .menu { display: none; padding: 60px; }
-    .menu button { margin: 15px; background: #22c55e; color: #022c22; }
-
-    /* QUIZ */
-    #quiz { display: none; padding: 30px; }
-    .answers button {
-      display: block;
-      width: 90%;
-      max-width: 500px;
-      margin: 12px auto;
-      background: #1e293b;
-      color: #fff;
-    }
-    #timer { font-size: 22px; margin: 15px; }
-
-    /* ADMIN */
-    #admin-login {
-      position: fixed;
-      bottom: 20px;
-      left: 20px;
-    }
-    #admin-panel {
-      display: none;
+    .question-box {
       background: #020617;
-      padding: 30px;
-      min-height: 100vh;
+      padding: 25px;
+      border-radius: 20px;
+      max-width: 600px;
+      margin: auto;
+      box-shadow: 0 20px 40px rgba(0,0,0,.5);
     }
-    #admin-panel h2 { margin-top: 0; }
-    textarea, select { width: 90%; padding: 10px; border-radius: 8px; }
-    .question-item { background:#020617; border:1px solid #334155; margin:10px auto; padding:10px; width:90%; border-radius:10px; }
+
+    .answer {
+      background: #1e293b;
+      padding: 15px;
+      margin: 12px 0;
+      border-radius: 14px;
+      cursor: pointer;
+      transition: .3s;
+    }
+    .answer:hover { background: #334155; transform: scale(1.03); }
+
+    .correct { background: #22c55e !important; color: #052e16; }
+    .wrong { background: #ef4444 !important; }
 
     /* CONFETTI */
-    .confetti { font-size: 40px; animation: fall 2s linear infinite; }
-    @keyframes fall { from{transform:translateY(-100px);} to{transform:translateY(600px);} }
+    canvas {
+      position: fixed;
+      top: 0; left: 0;
+      pointer-events: none;
+    }
+
+    /* ADMIN */
+    .admin {
+      background: #020617;
+      padding: 30px;
+      border-radius: 20px;
+      max-width: 700px;
+      margin: auto;
+    }
+
+    textarea {
+      width: 100%;
+      height: 150px;
+      border-radius: 12px;
+      padding: 12px;
+    }
   </style>
 </head>
 <body>
 
-<!-- MUSIC -->
-<iframe id="bgm" width="0" height="0" src="https://www.youtube.com/embed/Fcd9O5jLRB8?autoplay=1&loop=1&playlist=Fcd9O5jLRB8" allow="autoplay"></iframe>
-<button onclick="toggleMusic()" style="position:fixed;top:20px;right:20px;">Müzik</button>
+<audio id="bgMusic" src="Aldırma Gönül  Yan Flüt - Piyano.mp3" loop></audio>
 
 <!-- HERO -->
-<div class="hero" id="hero">
-  <h1>Bilgi Yarışması</h1>
-  <p>Okul Projesi – Profesyonel Sunum</p>
-  <input id="playerName" class="input" placeholder="İsim Soyisim">
-  <button onclick="enterSite()">Giriş Yap</button>
-</div>
+<section class="hero" id="home">
+  <div class="hero-box">
+    <h1>Hoş Geldiniz</h1>
+    <button class="btn btn-primary" onclick="openPresentation()">📑 Sunumu Aç</button>
+    <button class="btn btn-secondary" onclick="showName()">🏆 Bilgi Yarışması</button>
+    <button class="btn btn-warning" onclick="showScores()">📊 Skor Tablosu</button>
+  </div>
+</section>
 
-<!-- MENU -->
-<div class="menu" id="menu">
-  <h2>Hoş geldin <span id="playerLabel"></span></h2>
-  <button onclick="startQuiz()">Bilgi Yarışması</button>
-  <button onclick="openPresentation()">Sunumu Aç</button>
-</div>
+<!-- NAME -->
+<section class="page hidden" id="namePage">
+  <h2>İsminizi Girin</h2><br>
+  <input id="playerName" placeholder="İsim Soyisim">
+  <button class="btn btn-primary" onclick="startQuiz()">Başla</button>
+</section>
 
 <!-- QUIZ -->
-<div id="quiz">
-  <h2 id="question"></h2>
-  <div id="timer"></div>
-  <div class="answers" id="answers"></div>
-</div>
+<section class="page hidden" id="quizPage">
+  <div class="question-box">
+    <h3 id="question"></h3>
+    <div id="answers"></div>
+    <p id="timer"></p>
+  </div>
+</section>
 
-<!-- ADMIN LOGIN -->
-<div id="admin-login">
-  <input id="admin-pass" type="password" class="input" placeholder="Yönetici Şifresi">
-  <button onclick="adminLogin()">Admin</button>
-</div>
+<!-- RESULT -->
+<section class="page hidden" id="resultPage">
+  <h1 id="resultText"></h1>
+  <h2 id="scoreText"></h2><br>
+  <button class="btn btn-primary" onclick="restart()">Tekrar Oyna</button>
+</section>
 
-<!-- ADMIN PANEL -->
-<div id="admin-panel">
-  <h2>Yönetim Paneli</h2>
-  <button onclick="goHome()">Ana Sayfaya Dön</button>
+<!-- SCOREBOARD -->
+<section class="page hidden" id="scorePage">
+  <h2>Skor Tablosu</h2><br>
+  <div id="scoreList"></div><br>
+  <button class="btn btn-secondary" onclick="goHome()">Ana Sayfa</button>
+</section>
 
-  <h3>Soru Ekle</h3>
-  <input id="q" class="input" placeholder="Soru"><br>
-  <input id="a1" class="input" placeholder="A"><br>
-  <input id="a2" class="input" placeholder="B"><br>
-  <input id="a3" class="input" placeholder="C"><br>
-  <input id="a4" class="input" placeholder="D"><br>
-  <input id="correct" class="input" placeholder="Doğru (0-3)"><br>
-  <button onclick="addQuestion()">Ekle</button>
+<!-- ADMIN -->
+<section class="page hidden" id="adminPage">
+  <div class="admin">
+    <h2>Yönetici Paneli</h2><br>
+    <textarea id="questionJSON"></textarea><br><br>
+    <button class="btn btn-primary" onclick="saveQuestions()">Soruları Kaydet</button>
+    <button class="btn btn-warning" onclick="resetScores()">Skorları Sıfırla</button>
+    <button class="btn btn-secondary" onclick="goHome()">Ana Sayfa</button>
+  </div>
+</section>
 
-  <h3>Sorular</h3>
-  <div id="questionList"></div>
-</div>
+<canvas id="confetti"></canvas>
 
 <script>
-let adminPassword = '0655';
+const music = document.getElementById('bgMusic');
 let player = '';
+let index = 0;
+let score = 0;
 let time = 40;
 let timer;
-let current = 0;
-let score = 0;
 
 let questions = JSON.parse(localStorage.getItem('questions')) || [
-  {q:'Türkiye\'nin başkenti neresidir?', a:['İstanbul','Ankara','İzmir','Bursa'], c:1},
-  {q:'En büyük gezegen?', a:['Mars','Venüs','Jüpiter','Satürn'], c:2}
+  {q:'Sabahattin Ali hangi türde eserler yazmıştır?',a:['Roman','Şiir','Hikâye','Hepsi'],c:3},
+  {q:'Kürk Mantolu Madonna bir?',a:['Şiir','Roman','Oyun','Deneme'],c:1},
+  {q:'Sabahattin Ali nerelidir?',a:['Edirne','Gümülcine','İstanbul','Ankara'],c:1}
 ];
 
-function toggleMusic(){ const bgm=document.getElementById('bgm'); bgm.src=bgm.src.includes('autoplay')?'':'https://www.youtube.com/embed/Fcd9O5jLRB8?autoplay=1&loop=1&playlist=Fcd9O5jLRB8'; }
+function show(id){ document.querySelectorAll('.page, .hero').forEach(e=>e.classList.add('hidden')); document.getElementById(id).classList.remove('hidden'); }
 
-function enterSite(){
-  const name=document.getElementById('playerName').value;
-  if(!name) return alert('İsim giriniz');
-  player=name;
-  document.getElementById('playerLabel').innerText=player;
-  hero.style.display='none'; menu.style.display='block';
-}
+function showName(){ show('namePage'); music.play(); }
+function startQuiz(){ player=document.getElementById('playerName').value; if(!player) return alert('İsim giriniz'); index=0; score=0; show('quizPage'); loadQ(); }
 
-function startQuiz(){ menu.style.display='none'; quiz.style.display='block'; current=0; score=0; loadQuestion(); }
+function loadQ(){ if(index>=questions.length) return finish(); let q=questions[index]; document.getElementById('question').innerText=q.q; let html=''; q.a.forEach((x,i)=> html+=`<div class='answer' onclick='answer(${i})'>${x}</div>`); document.getElementById('answers').innerHTML=html; time=40; clearInterval(timer); timer=setInterval(()=>{ time--; document.getElementById('timer').innerText='Süre: '+time; if(time<=0) answer(-1); },1000); }
 
-function loadQuestion(){
-  if(current>=questions.length){
-    quiz.innerHTML=`<h2>Tebrikler ${player}</h2><p>Puan: ${score}</p><div class='confetti'>🎉🎉🎉</div>`; return;
-  }
-  let q=questions[current];
-  question.innerText=q.q;
-  answers.innerHTML='';
-  q.a.forEach((x,i)=>{
-    let b=document.createElement('button'); b.innerText=x;
-    b.onclick=()=>answer(i);
-    answers.appendChild(b);
-  });
-  time=40; timer&&clearInterval(timer);
-  timer=setInterval(()=>{ timerEl.innerText='Süre: '+time; if(--time<0) answer(-1); },1000);
-}
+function answer(i){ clearInterval(timer); document.querySelectorAll('.answer').forEach((e,idx)=>{ e.classList.add(idx===questions[index].c?'correct':'wrong'); }); if(i===questions[index].c) score++; setTimeout(()=>{ index++; loadQ(); },800); }
 
-function answer(i){ clearInterval(timer); if(i===questions[current].c) score++; current++; loadQuestion(); }
+function finish(){ let scores=JSON.parse(localStorage.getItem('scores'))||[]; scores.push({name:player,score}); localStorage.setItem('scores',JSON.stringify(scores)); show('resultPage'); document.getElementById('resultText').innerText='Tebrikler '+player+'!'; document.getElementById('scoreText').innerText='Puan: '+score; confetti(); }
 
-function adminLogin(){
-  if(adminPass.value===adminPassword){ adminLoginBox.style.display='none'; adminPanel.style.display='block'; renderQuestions(); }
-  else alert('Şifre yanlış');
-}
+function restart(){ show('home'); }
+function goHome(){ show('home'); }
 
-function addQuestion(){
-  questions.push({q:q.value,a:[a1.value,a2.value,a3.value,a4.value],c:parseInt(correct.value)});
-  localStorage.setItem('questions',JSON.stringify(questions));
-  renderQuestions();
-}
+function showScores(){ show('scorePage'); let s=JSON.parse(localStorage.getItem('scores'))||[]; document.getElementById('scoreList').innerHTML=s.map(x=>`<p>${x.name} - ${x.score}</p>`).join(''); }
 
-function renderQuestions(){
-  questionList.innerHTML='';
-  questions.forEach((x,i)=>{
-    let d=document.createElement('div'); d.className='question-item';
-    d.innerHTML=`${x.q}<br><button onclick='deleteQuestion(${i})'>Sil</button>`;
-    questionList.appendChild(d);
-  });
-}
+function openPresentation(){ window.open('Sabahattin-Ali-Kimdir.pdf'); }
 
-function deleteQuestion(i){ questions.splice(i,1); localStorage.setItem('questions',JSON.stringify(questions)); renderQuestions(); }
-function goHome(){ adminPanel.style.display='none'; hero.style.display='flex'; adminLoginBox.style.display='block'; }
+function saveQuestions(){ try{ let q=JSON.parse(document.getElementById('questionJSON').value); localStorage.setItem('questions',JSON.stringify(q)); alert('Kaydedildi'); }catch{ alert('JSON Hatalı'); } }
 
-const hero=document.getElementById('hero');
-const menu=document.getElementById('menu');
-const quiz=document.getElementById('quiz');
-const question=document.getElementById('question');
-const answers=document.getElementById('answers');
-const timerEl=document.getElementById('timer');
-const adminLoginBox=document.getElementById('admin-login');
-const adminPanel=document.getElementById('admin-panel');
-const adminPass=document.getElementById('admin-pass');
-const questionList=document.getElementById('questionList');
+function resetScores(){ localStorage.removeItem('scores'); alert('Sıfırlandı'); }
+
+function confetti(){ const c=document.getElementById('confetti'); const ctx=c.getContext('2d'); c.width=innerWidth; c.height=innerHeight; let pieces=Array.from({length:150},()=>({x:Math.random()*c.width,y:Math.random()*c.height,r:Math.random()*6+4,dy:Math.random()*3+2})); let anim=setInterval(()=>{ ctx.clearRect(0,0,c.width,c.height); pieces.forEach(p=>{ ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2); ctx.fillStyle='hsl('+Math.random()*360+',80%,60%)'; ctx.fill(); p.y+=p.dy; if(p.y>c.height) p.y=0; }); },30); setTimeout(()=>clearInterval(anim),4000); }
+
+// ADMIN LOGIN
+window.addEventListener('keydown',e=>{ if(e.key==='Enter' && prompt('Yönetici Şifre')==='0655'){ show('adminPage'); document.getElementById('questionJSON').value=JSON.stringify(questions,null,2); } });
 </script>
 </body>
 </html>
